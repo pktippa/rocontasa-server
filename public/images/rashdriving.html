@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rash Driving Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+    html, body {
+        height: 90%;
+      }
+    #map-canvas {
+        height: 100%;
+        top-margin: 15px;
+      }
+    </style>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+        <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js" type="text/javascript"></script>
+
+<script>
+        
+        var map;
+        var timer;
+        var markers = [];
+        var styles = [{"url":"./rash_green.png","height":40,"width":40},
+{"url":"/rash_blue.png","height":40,"width":40},
+{"url":"/rash_red.png","height":40,"width":40},
+{"url":"/rash_red.png","height":40,"width":40},
+{"url":"/rash_red.png","height":40,"width":40}];
+        var mcOptions = {gridSize: 30, maxZoom: 21, averageCenter: true,styles:styles};
+        var xhr;
+        var mc;
+        var image = {
+                url: '/cross.png',
+                size: new google.maps.Size(16, 16),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(8, 8)
+        };
+
+
+        function initialize() {
+                var mapOptions = {
+                zoom: 12,
+                center: new google.maps.LatLng(12.913, 77.575)
+                };
+
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                mc = new MarkerClusterer(map, markers, mcOptions);
+	
+                refreshData();
+        }
+
+
+
+
+
+
+function refreshData()
+{
+        map.setOptions({ draggableCursor: 'wait' });
+        $.ajax( {
+                type:"GET",
+                url:"/detektor/getrashdriving",
+                success: function(data) {
+                                var m=0;
+                                var locations = JSON.parse(data);
+                                locations.forEach(function(item) {
+                                  if(item.x != undefined) {
+                                        var myLatLng = new google.maps.LatLng(item.x, item.y);
+                                        var marker = new google.maps.Marker({ position: myLatLng, map: map, title: 'Rash Driving Location', icon: image });
+                                        markers.push(marker);
+                                        m++;
+                                        if(m > locations.length - 1) {
+                                                mc.addMarkers(markers);
+                                                console.log('getAverageCenter:' + mc.getAverageCenter());
+                                                map.setOptions({ draggableCursor: 'url(http://maps.gstatic.com/intl/en_us/mapfiles/openhand_8_8.cur),default' });
+                                        }
+					var styles=mc.getStyles();
+					console.log(JSON.stringify(styles));
+
+                                }
+                                  
+                        }
+                );
+                if(locations.length==0) map.setOptions({ draggableCursor: 'url(http://maps.gstatic.com/intl/en_us/mapfiles/openhand_8_8.cur),default' });                
+                },
+                error: function(xhr,status,error) {
+                        alert(error + " " + status);
+                        map.setOptions({ draggableCursor: 'url(http://maps.gstatic.com/intl/en_us/mapfiles/openhand_8_8.cur),default' });
+                }
+        });
+
+}
+
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+  </head>
+  <body>
+  		<div>
+  			<center>EdgeVerve Hackathon - Dec 2014</center>
+  			<center><B><font color="red">Rash Driving Map</font></B></center>
+  		</div>	
+    <div id="map-canvas"></div>
+  </body>
+</html>
+
