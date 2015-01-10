@@ -1,6 +1,6 @@
 // Author : pktippa@gmail.com
 var express=require('express');
-var db = require('../service/db');
+var db = require('../services/db');
 //console.log(dbconfig.conf.port);
 var router=express.Router();
 router.route('/upload')
