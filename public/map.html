@@ -68,7 +68,7 @@ html,body {
 		$
 				.ajax({
 					type : "GET",
-					url : "/detektor/getpotholes?th=" + th,
+					url : "/rocontasa/getpotholes?th=" + th,
 					success : function(data) {
 						var m = 0;
 						var locations = JSON.parse(data);
@@ -141,7 +141,7 @@ html,body {
 		}
 		$.ajax({
 			type : "POST",
-			url : "/detektor/saveclusters",
+			url : "/rocontasa/saveclusters",
 			data : JSON.stringify(clusterarray),
 			contentType : "application/json; charset=utf-8",
 			dataType : "json",
