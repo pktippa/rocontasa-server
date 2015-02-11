@@ -1,14 +1,14 @@
-# Rocontasa - Webapp and service layer in Nodejs [![Build Status](https://travis-ci.org/rocontasa/webapp.png)](https://travis-ci.org/rocontasa/webapp)
+# Rocontasa - Webapp and service layer in Nodejs [![Build Status](https://travis-ci.org/rocontasa/wappservice.png)](https://travis-ci.org/rocontasa/wappservice)
 Nodejs Backend
   * Web UI and Service layer
 How to clone
   * Run command in the application source directory
-    git clone https://github.com/rocontasa/webapp
+    git clone https://github.com/rocontasa/wappservice
 How to Run
   * Open terminal/command prompt
   * Change the directory to the application source directory. 
-    Ex: Linux - cd /home/user2/webapp/
- 		Windows - cd C:/Users/user2/webapp/
+    Ex: Linux - cd /home/user2/wappservice/
+ 		Windows - cd C:/Users/user2/wappservice/
   * Install dependencies by running "npm install"
   * Start Server 'nohup node app.js &' - The server will run on default port at 80 and connects to local mongodb running in 27017 port.
   * To test
@@ -28,7 +28,7 @@ How to upgrade server
 
   * After logging into the machine, switch to root user - sudo su.
   * Stop server - kill -9 <node-process>
-  * Go to /root/webapp/
+  * Go to /root/wappservice/
   * Run 'git stash' to remove local changes
   * Run 'git pull' to get latest code.
   * Start server 'nohup node app.js &'
