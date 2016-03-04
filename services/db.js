@@ -32,6 +32,7 @@ exports.insert = function insert(req, res) {
 	db.setMaxListeners(0);
 
 	var readPath = req.files.data.path;
+	// var readPath = req.files.data.file  // For using express-busboy
 	var deviceid = '';
 	var ltime = '';
 	fs.readFile(readPath, function(err, data) {

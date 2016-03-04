@@ -1,16 +1,16 @@
 {
-  "name": "rocontasa-webapp",
+  "name": "rocontasa-server",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-	"express": "4.10.4",
-	"body-parser":"1.9.0",
-	"mongoskin":"1.4.4",
-	"multer":"*",
-  	"csv": "*",
-  	"csv-parse":"*"
+    "body-parser": "1.9.0",
+    "csv": "0.4.5",
+    "csv-parse": "1.0.2",
+    "express": "4.10.4",
+    "mongoskin": "1.4.4",
+    "multer": "0.1.7"
   }
 }
