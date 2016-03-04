@@ -1,4 +1,4 @@
-# Rocontasa - Webapp and service layer in Nodejs [![Build Status](https://travis-ci.org/rocontasa/wappservice.png)](https://travis-ci.org/rocontasa/wappservice)
+# Rocontasa - Webapp and service layer in Nodejs [![Build Status](https://travis-ci.org/rocontasa/rocontasa-server.svg?branch=master)](https://travis-ci.org/rocontasa/rocontasa-server)
 Nodejs Backend
   * Web UI and Service layer
 How to clone
