@@ -12,72 +12,79 @@ var db = getConnection();
 db.setMaxListeners(0);
 
 exports.saveclusters = function saveclusters(req, res) {
-	var db = getConnection();
-	db.setMaxListeners(0);
-
-	var body = req.body;
-	console.log(body);
-
-	db.collection("clusters").insert(body, function(err, result) {
-		if (err)
-			console.log(err);
-		if (result)
-			console.log(result);
-	});
-
+  var db = getConnection();
+  db.setMaxListeners(0);
+  
+  var body = req.body;
+  console.log(body);
+  
+  db.collection("clusters").insert(body, function(err, result) {
+    if (err)
+      console.log(err);
+    if (result)
+      console.log(result);
+  });
 };
 
 exports.insert = function insert(req, res) {
-	var db = getConnection();
-	db.setMaxListeners(0);
-
-	var readPath = req.files.data.path;
-	// var readPath = req.files.data.file  // For using express-busboy
-	var deviceid = '';
-	var ltime = '';
-	fs.readFile(readPath, function(err, data) {
-		if (err)
-			throw err;
-		zlib.gunzip(data, function(err, dezipped) {
-
-			// Create the parser
-			var parser = parse({
-				delimiter : ',',
-				columns : [ 'deviceid', 'type', 'time', 'd1', 'd2', 'd3' ],
-				auto_parse : true,
-				trim : true
-			});
-
-			// Use the writable stream api
-			parser.on('readable', function() {
-				while (record = parser.read()) {
-					db.collection("data").insert(record, function(err, result) {
-						if (err)
-							throw err;
-					});
-					deviceid = record.deviceid;
-					ltime = record.time;
-				}
-			});
-			// Catch any error
-			parser.on('error', function(err) {
-				console.log(err.message);
-			});
-			// When we are done, log
-			parser.on('finish', function() {
-				console.log('' + ltime + ":" + deviceid + ':Done Parsing');
-			});
-
-			// Now that setup is done, write data to the stream
-			parser.write(dezipped.toString());
-			// Close the readable stream
-			parser.end();
-
-		});
-
-	});
-
-	res.end("File Uploaded");
+  var db = getConnection();
+  db.setMaxListeners(0);
+  
+  var readPath = req.files.data.path;
+  // var readPath = req.files.data.file  // For using express-busboy
+  var deviceid = '';
+  var ltime = '';
+  fs.readFile(readPath, function(err, data) {
+    if (err)
+      throw err;
+    zlib.gunzip(data, function(err, dezipped) {
+      if(err) {
+        console.log('Error in unzipping data ', err);
+        res.end('File upload failed.');
+      }
+      else{
+    	
+        // Create the parser
+        var parser = parse({
+                       delimiter : ',',
+                       columns : [ 'deviceid', 'type', 'time', 'd1', 'd2', 'd3' ],
+                       auto_parse : true,
+                       trim : true
+                     });
+        
+        // Use the writable stream api
+        parser.on('readable', function() {
+          while (record = parser.read()) {
+            db.collection("data").insert(record, function(err, result) {
+              if (err)
+                throw err;
+            });
+            deviceid = record.deviceid;
+            ltime = record.time;
+          }
+        });
+        
+        // Catch any error
+        parser.on('error', function(err) {
+          console.log(err.message);
+        });
+        
+        // When we are done, log
+        parser.on('finish', function() {
+          console.log('' + ltime + ":" + deviceid + ':Done Parsing');
+        });
+        
+        // Now that setup is done, write data to the stream
+        parser.write(dezipped.toString());
+        
+        // Close the readable stream
+        parser.end();
+      }
+      res.end("File Upload successful.");
+    });
+    
+  });
+  
 };
 
 exports.getallpotholes = function getpotholes(req, res) {
