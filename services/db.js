@@ -32,8 +32,6 @@ exports.insert = function insert(req, res) {
   
   var readPath = req.files.data.path;
   // var readPath = req.files.data.file  // For using express-busboy
-  var deviceid = '';
-  var ltime = '';
   fs.readFile(readPath, function(err, data) {
     if (err)
       throw err;
@@ -59,8 +57,6 @@ exports.insert = function insert(req, res) {
               if (err)
                 throw err;
             });
-            deviceid = record.deviceid;
-            ltime = record.time;
           }
         });
         
@@ -71,7 +67,11 @@ exports.insert = function insert(req, res) {
         
         // When we are done, log
         parser.on('finish', function() {
-          console.log('' + ltime + ":" + deviceid + ':Done Parsing');
+          console.log('File ' + readPath + ' parsed successfully. Deleting the file now.');
+          fs.unlink(readPath,function(err){
+            if(err) console.log('Deleting file '+ readPath + ' failed with error - ' + err);
+            else console.log('File '+ readPath +' deleted successfully.')
+          });
         });
         
         // Now that setup is done, write data to the stream
