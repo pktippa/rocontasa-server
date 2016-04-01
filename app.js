@@ -14,5 +14,10 @@ app.use(parser.urlencoded());
 app.use(multer({ dest: './uploads/'}));
 app.use('/rocontasa', rocontasa);
 
+// Checking connectivity
+app.get('/checkConnectivity', function(req, res){
+  res.json({connection: 'success'});
+});
+
 app.listen(process.env.PORT || 80);
 app.use(express.static(path.join(__dirname, 'public')));
